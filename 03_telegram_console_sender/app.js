@@ -1,14 +1,31 @@
 process.env["NTBA_FIX_350"] = 1;
 
+const fs = require('fs');
+const path = require('path');
 const { Command } = require('commander');
 const TelegramBot = require('node-telegram-bot-api');
 
-const token = process.env.TOKEN;
+const envFilePath = path.resolve(__dirname, '.env');
+
+if (fs.existsSync(envFilePath)) {
+  const envFileContent = fs.readFileSync(envFilePath, 'utf-8');
+  const envVariables = envFileContent.split('\n');
+
+  for (const envVar of envVariables) {
+    const [key, value] = envVar.split('=');
+    if (key && value) {
+      process.env[key] = value;
+    }
+  }
+}
+
+const token = process.env.TOKEN.slice(0, -1);
+
+let chat_id = parseInt(process.env.CHAT_ID)
+
 const bot = new TelegramBot(token, {polling: true});
 
 const program = new Command();
-
-let chat_id = process.env.CHAT_ID
 
 program.command('send-message')
     .argument('<message>')
