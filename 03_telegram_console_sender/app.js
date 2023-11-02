@@ -19,11 +19,11 @@ if (fs.existsSync(envFilePath)) {
   }
 }
 
-const token = process.env.TOKEN.slice(0, -1);
+process.env.TOKEN = process.env.TOKEN.slice(0, -1);
 
-let chat_id = parseInt(process.env.CHAT_ID)
+process.env.CHAT_ID = parseInt(process.env.CHAT_ID)
 
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
 const program = new Command();
 
@@ -31,7 +31,7 @@ program.command('send-message')
     .argument('<message>')
     .description('Sending message from bot.')
     .action(async (message_value) => {
-        await bot.sendMessage(chat_id, message_value)
+        await bot.sendMessage(process.env.CHAT_ID, message_value)
         process.exit(0);
     });
 
@@ -44,7 +44,7 @@ program.command('send-photo')
             contentType: 'application/octet-stream'
         };
 
-        await bot.sendPhoto(chat_id, photo_path, {}, fileOptions)
+        await bot.sendPhoto(process.env.CHAT_ID, photo_path, {}, fileOptions)
         process.exit(0);
     });
 
