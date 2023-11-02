@@ -41,7 +41,7 @@ const intervalKeyboard = {
   ],
 };
 
-const chatId = 766813329
+const chatId = process.env.CHAT_ID
 
 bot.onText(/\/start/, (msg) => {
   bot.sendMessage(chatId, 'Welcome to weather forecast!', {
@@ -50,7 +50,6 @@ bot.onText(/\/start/, (msg) => {
 });
 
 const API_KEY = process.env.API_KEY
-console.log(API_KEY)
 const API = 'https://api.openweathermap.org/data/2.5/forecast?lat=49.84&lon=24.03&appid=' + API_KEY
 
 const getWeather = (interval) => {
